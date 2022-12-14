@@ -1,0 +1,14 @@
+{
+  "kmhjnutility.config.hideMsg.show": "Mostra MSG",
+  "kmhjnutility.config.hideMsg.hide": "Ocultar MSG",
+  "kmhjnutility.config.general.title": "Gerais",
+  "kmhjnutility.config.general.tooltip": "Gerais",
+  "kmhjnutility.config.modules.title": "Defini\u00e7\u00f5es de Modulos",
+  "kmhjnutility.config.modules.tooltip": "Modulos",
+  "kmhjnutility.config.crosshairs.title": "Defini\u00e7\u00f5es da Crosshair",
+  "kmhjnutility.config.crosshairs.tooltip": "Crosshairs",
+  "kmhjnutility.config.themes.title": "Temas",
+  "kmhjnutility.config.themes.tooltip": "Temas",
+  "kmhjnutility.config.about.title": "Sobre",
+  "kmhjnutility.config.about.tooltip": "Sobre"
+}

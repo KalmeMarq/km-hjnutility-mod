@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "kmhjnutility",
+  "version": "${version}",
+  "name": "KM HJN Utility Mod",
+  "description": "Based on HJN Utility UI addon\nOriginal Author: @HJN\nOriginal Pixel Artist: @Chr7st",
+  "authors": [
+    "KalmeMarq"
+  ],
+  "contact": {
+    "sources": "https://github.com/KalmeMarq/km-hutility-mod",
+    "issues": "https://github.com/KalmeMarq/km-hutility-mod/issues"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/kmhjnutility/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.kalmemarq.hjnutility.HJNUtilityMod"
+    ],
+    "client": [
+      "me.kalmemarq.hjnutility.HJNUtilityClient"
+    ],
+    "modmenu": [
+      "me.kalmemarq.hjnutility.HJNUtilityModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "kmhjnutility.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.11",
+    "fabric-api": "*",
+    "minecraft": "~1.19.3",
+    "java": ">=17"
+  }
+}
