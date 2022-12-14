@@ -12,6 +12,22 @@ public class HJNConfig implements ConfigData {
     public Modules modules = new Modules();
     public Themes themes = new Themes();
 
+    public enum CrosshairModifier {
+        Normal,
+        White,
+        Chroma,
+        Red,
+        Green,
+        Blue,
+        Yellow,
+        Aqua
+    }
+    public enum Theme {
+        Default,
+        Custom,
+        Bedrock
+    }
+
     public static class General {
         public boolean hideMsg = false;
         public boolean shinyPotions = false;
@@ -24,14 +40,9 @@ public class HJNConfig implements ConfigData {
         public boolean showPaperdoll = false;
         public boolean hideMobEffects = false;
         public boolean showItemID = false;
+        public boolean showCompass = false;
         public boolean hideBossBars = false;
         public boolean hideVignette = false;
-    }
-
-    public enum Theme {
-        Default,
-        Custom,
-        Bedrock
     }
 
     public static class Themes {
@@ -39,18 +50,7 @@ public class HJNConfig implements ConfigData {
         public boolean hideScreenBackground = false;
     }
 
-    public enum CrosshairModifier {
-        Normal,
-        White,
-        Chroma,
-        Red,
-        Green,
-        Blue,
-        Yellow,
-        Aqua
-    }
-
-    static class CrosshairMode {
+    public static class CrosshairMode {
         public float scale = 1.0f;
         public int crosshairIndex = 0;
         public CrosshairModifier modifier = CrosshairModifier.Normal;
