@@ -35,6 +35,7 @@ public class HJNConfig implements ConfigData {
         public boolean armorHud = false;
         public boolean mainHandSlot = false;
         public boolean offHandSlot = true;
+        public boolean statusHud = false;
     }
 
     public static class Modules {

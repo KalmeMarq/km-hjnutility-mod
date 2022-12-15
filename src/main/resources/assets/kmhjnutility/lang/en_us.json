@@ -15,6 +15,7 @@
   "kmhjnutility.config.general.armor_hud": "Armor HUD",
   "kmhjnutility.config.general.mainhand_slot": "MainHand Slot",
   "kmhjnutility.config.general.offhand_slot": "OffHand Slot",
+  "kmhjnutility.config.general.status_hud": "Status HUD",
   "kmhjnutility.config.modules.show_compass": "Show Compass",
   "kmhjnutility.config.modules.hide_mobeffects": "Hide Mob Effects",
   "kmhjnutility.config.modules.show_item_id": "Show Item ID",

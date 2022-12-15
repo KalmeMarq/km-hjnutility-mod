@@ -168,9 +168,46 @@ public abstract class InGameHudMixin extends DrawableHelper {
         }
     }
 
+    private static final Text STATUS_JUMPING = Text.literal("Jumping");
+    private static final Text STATUS_SNEAKING = Text.literal("Sneaking");
+    private static final Text STATUS_WALKING = Text.literal("Walking");
+    private static final Text STATUS_SWIMMING = Text.literal("Swimming");
+    private static final Text STATUS_SPRINTING = Text.literal("Sprinting");
+    private static final Text[] STATUS_TEXTS = new Text[]{ STATUS_WALKING, STATUS_SNEAKING, STATUS_JUMPING, STATUS_SWIMMING };
+
     @Inject(method = "render", at = @At("TAIL"))
     private void kmhjnutility$renderPaperDollArmorHud(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         PlayerEntity player = this.getCameraPlayer();
+
+        if (player != null && HJNUtilityMod.config != null && HJNUtilityMod.config.general.statusHud) {
+            boolean isJumping = !player.isOnGround() && !player.isFallFlying();
+            boolean isSneaking = player.isSneaking();
+            boolean isWalking = false;
+            boolean isSwimming = player.isSwimming();
+            boolean isSprinting = player.isSprinting();
+            boolean[] bools = new boolean[]{ isWalking || isSprinting, isSneaking, isJumping, isSwimming };
+
+            int maxWidth = 0;
+
+            for (int i = 0; i < bools.length; i++) {
+                int w = getTextRenderer().getWidth(i == 0 && isSprinting ? STATUS_SPRINTING : STATUS_TEXTS[i]) + 8;
+                if (w > maxWidth) {
+                    maxWidth = w;
+                }
+            }
+
+            int j = -1;
+            for (int i = 0; i < bools.length; i++) {
+                if (!bools[i]) {
+                    continue;
+                }
+                ++j;
+
+                fill(matrices, 1, 1 + (j * 10), 1 + maxWidth, 1 + 10 + (j * 10), 0xAA_000000);
+
+                RenderUtil.drawCenteredText(matrices, getTextRenderer(), i == 0 && isSprinting ? STATUS_SPRINTING : STATUS_TEXTS[i], 1 + maxWidth / 2, 2 + (j * 10), 0xFF_FFFFFF);
+            }
+        }
 
         if (player != null && HJNUtilityMod.config != null && HJNUtilityMod.config.general.armorHud) {
             Iterator<ItemStack> armors = player.getArmorItems().iterator();

@@ -178,6 +178,7 @@ public class HJNUtilityScreen extends Screen {
         private HJNToggleButton armorHudToggle;
         private HJNToggleButton mainHandToggle;
         private HJNToggleButton offHandToggle;
+        private HJNToggleButton statusHudToggle;
 
         @Override
         protected void buildGUI(int pageX, int pageY, int pageWidth, int pageHeight) {
@@ -207,17 +208,25 @@ public class HJNUtilityScreen extends Screen {
             });
             mainHandToggle.setToggled(HJNUtilityMod.config.general.mainHandSlot);
 
-            offHandToggle = new HJNToggleButton(pageX + 2, pageY + 2 + 42, 82, 38, Text.translatable("kmhjnutility.config.general.offhand_slot"), 144, 32, button -> {
+            offHandToggle = new HJNToggleButton(pageX + 2, pageY + 2 + 40, 82, 38, Text.translatable("kmhjnutility.config.general.offhand_slot"), 144, 32, button -> {
                 boolean newValue = !((HJNToggleButton)button).isToggled();
                 ((HJNToggleButton)button).setToggled(newValue);
                 HJNUtilityMod.config.general.offHandSlot = newValue;
             });
             offHandToggle.setToggled(HJNUtilityMod.config.general.offHandSlot);
 
+            statusHudToggle = new HJNToggleButton(pageX + 2 + 82 + 2, pageY + 2 + 40, 82, 38, Text.translatable("kmhjnutility.config.general.status_hud"), 240, 32, button -> {
+                boolean newValue = !((HJNToggleButton)button).isToggled();
+                ((HJNToggleButton)button).setToggled(newValue);
+                HJNUtilityMod.config.general.statusHud = newValue;
+            });
+            statusHudToggle.setToggled(HJNUtilityMod.config.general.statusHud);
+
             this.addWidgetAction.add(shinyPotionsToggle);
             this.addWidgetAction.add(armorHudToggle);
             this.addWidgetAction.add(mainHandToggle);
             this.addWidgetAction.add(offHandToggle);
+            this.addWidgetAction.add(statusHudToggle);
 
             this.setVisible(false);
         }
@@ -229,6 +238,7 @@ public class HJNUtilityScreen extends Screen {
             armorHudToggle.visible = visible;
             mainHandToggle.visible = visible;
             offHandToggle.visible = visible;
+            statusHudToggle.visible = visible;
         }
     }
 
@@ -286,19 +296,19 @@ public class HJNUtilityScreen extends Screen {
             });
             hideVignetteToggle.setToggled(HJNUtilityMod.config.modules.hideVignette);
 
-            showPaperdollToggle = new HJNToggle(pageX + 126, pageY + 2 + 15 + 2 + 15 + 2, 126, 15, Text.translatable("kmhjnutility.config.modules.show_paperdoll"), button -> {
-                boolean newValue = !((HJNToggle)button).isToggled();
-                ((HJNToggle)button).setToggled(newValue);
-                HJNUtilityMod.config.modules.showPaperdoll = newValue;
-            });
-            showPaperdollToggle.setToggled(HJNUtilityMod.config.modules.showPaperdoll);
+//            showPaperdollToggle = new HJNToggle(pageX + 126, pageY + 2 + 15 + 2 + 15 + 2, 126, 15, Text.translatable("kmhjnutility.config.modules.show_paperdoll"), button -> {
+//                boolean newValue = !((HJNToggle)button).isToggled();
+//                ((HJNToggle)button).setToggled(newValue);
+//                HJNUtilityMod.config.modules.showPaperdoll = newValue;
+//            });
+//            showPaperdollToggle.setToggled(HJNUtilityMod.config.modules.showPaperdoll);
 
             this.addWidgetAction.add(showCompassToggle);
             this.addWidgetAction.add(hideMobEffectsToggle);
             this.addWidgetAction.add(showItemIDToggle);
             this.addWidgetAction.add(hideBossBarsToggle);
             this.addWidgetAction.add(hideVignetteToggle);
-            this.addWidgetAction.add(showPaperdollToggle);
+//            this.addWidgetAction.add(showPaperdollToggle);
 
             setVisible(false);
         }
@@ -306,7 +316,7 @@ public class HJNUtilityScreen extends Screen {
         @Override
         public void setVisible(boolean visible) {
             super.setVisible(visible);
-            showPaperdollToggle.visible = visible;
+//            showPaperdollToggle.visible = visible;
             hideMobEffectsToggle.visible = visible;
             showItemIDToggle.visible = visible;
             showCompassToggle.visible = visible;
@@ -535,7 +545,7 @@ public class HJNUtilityScreen extends Screen {
             });
             themeCustomBtn.setToggled(HJNUtilityMod.config.themes.theme == HJNConfig.Theme.Custom);
 
-            themeBedrockBtn = new HJNThemeToggleButton(pageX + 3 + 82 + 2 + 82 + 2, pageY + 2 + 21, Text.translatable("kmhjnutility.config.themes.theme.bedrock"), 338, 0, 122, 576, button -> {
+            themeBedrockBtn = new HJNThemeToggleButton(pageX + 3 + 82 + 2 + 82 + 2, pageY + 2 + 21, Text.translatable("kmhjnutility.config.themes.theme.bedrock"), 387, 0, 122, 576, button -> {
                 themeDefaultBtn.setToggled(false);
                 themeCustomBtn.setToggled(false);
                 themeBedrockBtn.setToggled(true);
