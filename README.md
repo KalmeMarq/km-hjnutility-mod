@@ -1,3 +1,7 @@
 # KM HJN Utility Mod (Fabric)
 
-Original addon (Utility UI) by @HJN
+Based on HJN Utility UI addon
+
+Original Author: @HJN
+
+Original Pixel Artist: @Chr7st

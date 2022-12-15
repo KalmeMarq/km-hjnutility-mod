@@ -11,9 +11,10 @@ public class HJNConfig implements ConfigData {
     public General general = new General();
     public Modules modules = new Modules();
     public Themes themes = new Themes();
+    public CrosshairMode crosshairs = new CrosshairMode();
 
     public enum CrosshairModifier {
-        Normal,
+        Inverted,
         White,
         Chroma,
         Red,
@@ -53,6 +54,6 @@ public class HJNConfig implements ConfigData {
     public static class CrosshairMode {
         public float scale = 1.0f;
         public int crosshairIndex = 0;
-        public CrosshairModifier modifier = CrosshairModifier.Normal;
+        public CrosshairModifier modifier = CrosshairModifier.Inverted;
     }
 }

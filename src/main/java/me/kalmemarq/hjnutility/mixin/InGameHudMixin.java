@@ -1,9 +1,12 @@
 package me.kalmemarq.hjnutility.mixin;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.kalmemarq.hjnutility.HJNConfig;
+import me.kalmemarq.hjnutility.HJNCrosshair;
 import me.kalmemarq.hjnutility.HJNUtilityMod;
 import me.kalmemarq.hjnutility.gui.RenderUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.BossBarHud;
@@ -19,17 +22,16 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Desc;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.lang.annotation.Target;
-import java.rmi.registry.Registry;
+import java.util.Iterator;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin extends DrawableHelper {
@@ -51,6 +53,10 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
     @Shadow public abstract void tick(boolean paused);
 
+    @Shadow private int ticks;
+
+    @Shadow @Final private MinecraftClient client;
+
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
     private void kmhjnutility$hideShowMobEffectsOverlay(MatrixStack matrices, CallbackInfo ci) {
         if (HJNUtilityMod.config != null && HJNUtilityMod.config.modules.hideMobEffects) {
@@ -71,9 +77,9 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
         if (player != null && HJNUtilityMod.config != null) {
             if (HJNUtilityMod.config.modules.showCompass) {
-                int y = scaledHeight - 2 - 14;
+                int y = scaledHeight - 2 - 14 - 2;
                 if (HJNUtilityMod.config.modules.showItemID) {
-                    y -= 20;
+                    y -= 18;
                 }
 
                 RenderSystem.setShaderTexture(0, HJN_TEXTURE);
@@ -90,10 +96,12 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
             ItemStack mainHand = player.getMainHandStack();
 
-            if (!mainHand.isEmpty()) {
+            boolean showID = !mainHand.isEmpty();
+            if (showID) {
                 Item item = mainHand.getItem();
 
-                if (HJNUtilityMod.config.modules.showItemID) {
+                showID =  HJNUtilityMod.config.modules.showItemID;
+                if (showID) {
                     Identifier itemID = Registries.ITEM.getId(item);
 
                     String text = itemID.toString();
@@ -162,6 +170,80 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void kmhjnutility$renderPaperDollArmorHud(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        // TODO
+        PlayerEntity player = this.getCameraPlayer();
+
+        if (player != null && HJNUtilityMod.config != null && HJNUtilityMod.config.general.armorHud) {
+            Iterator<ItemStack> armors = player.getArmorItems().iterator();
+
+            boolean hasArmor = false;
+            while (armors.hasNext()) {
+                    if (!armors.next().isEmpty()) {
+                        hasArmor = true;
+                        break;
+                    }
+            }
+
+            if (hasArmor) {
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+
+                int x = scaledWidth / 2 + 91 + 10;
+                int y = scaledHeight - 22 - 4 - (18 * 4) - 4 - 2;
+                int w = 16 + 4;
+                int h = (18 * 4) + 4 + 2;
+
+                RenderSystem.setShaderTexture(0, HJN_TEXTURE);
+                RenderUtil.drawColoredNinesliceTexture(matrices, x, y, w, h, 0, 0, 16, 16, BG_NS_INFO, 0xAA_000000);
+
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+
+                armors = player.getArmorItems().iterator();
+
+                int i = -1;
+                while (armors.hasNext()) {
+                    ItemStack stack = armors.next();
+                    ++i;
+                    if (stack.isEmpty()) continue;
+                    renderHotbarItem(x + 2, y + 4 + ((3 - i) * 18), tickDelta, player, stack, 13 + i);
+                }
+            }
+        }
+    }
+
+    @Redirect(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
+    private void kmhjnutility$renderCrosshair(InGameHud instance, MatrixStack matrixStack, int i0, int i1, int i2, int i3, int i4, int i5) {
+        if (HJNUtilityMod.config.crosshairs.modifier == HJNConfig.CrosshairModifier.Inverted && HJNUtilityMod.config.crosshairs.crosshairIndex == 0) {
+            instance.drawTexture(matrixStack, i0, i1, i2, i3, i4, i5);
+        } else {
+            int crosshairIndex = HJNUtilityMod.config.crosshairs.crosshairIndex;
+            HJNCrosshair crosshair = HJNCrosshair.CROSSHAIRS.get(crosshairIndex);
+            HJNConfig.CrosshairModifier modifier = HJNUtilityMod.config.crosshairs.modifier;
+
+            int x = (this.scaledWidth - crosshair.getWidth()) / 2;
+            int y = (this.scaledHeight - crosshair.getHeight()) / 2;
+
+            if (modifier == HJNConfig.CrosshairModifier.Inverted) {
+                RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
+                RenderSystem.setShaderTexture(0, HJN_TEXTURE);
+                drawTexture(matrixStack, x, y, crosshair.getU(), crosshair.getV(), crosshair.getWidth(), crosshair.getHeight());
+            } else {
+                RenderSystem.defaultBlendFunc();
+
+                int color;
+                if (modifier == HJNConfig.CrosshairModifier.Chroma) {
+                    color = RenderUtil.hslToRgb((float)this.ticks * 6.0f, 0.7f, 0.6f);
+                } else {
+                    color = HJNCrosshair.CROSSHAIR_COLOR.getOrDefault(modifier, 0xFF_FFFFFF);
+                }
+
+                RenderSystem.setShaderTexture(0, crosshairIndex == 0 ? GUI_ICONS_TEXTURE : HJN_TEXTURE);
+                RenderUtil.drawColoredTexture(matrixStack, x, y, getZOffset(), crosshair.getWidth(), crosshair.getHeight(), crosshair.getU(), crosshair.getV(), color);
+            }
+
+            RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+            RenderSystem.setShaderTexture(0, GUI_ICONS_TEXTURE);
+        }
     }
 }

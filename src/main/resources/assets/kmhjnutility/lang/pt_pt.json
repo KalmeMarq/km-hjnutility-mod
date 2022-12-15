@@ -10,5 +10,15 @@
   "kmhjnutility.config.themes.title": "Temas",
   "kmhjnutility.config.themes.tooltip": "Temas",
   "kmhjnutility.config.about.title": "Sobre",
-  "kmhjnutility.config.about.tooltip": "Sobre"
+  "kmhjnutility.config.about.tooltip": "Sobre",
+  "kmhjnutility.config.general.shiny_potions": "Shiny Potions",
+  "kmhjnutility.config.general.armor_hud": "Armor HUD",
+  "kmhjnutility.config.general.mainhand_slot": "M\u00e3o Principal",
+  "kmhjnutility.config.general.offhand_slot": "M\u00e3o Secund\u00e1ria",
+  "kmhjnutility.config.modules.show_compass": "Mostra Compasso",
+  "kmhjnutility.config.modules.hide_mobeffects": "Ocultar Efectos",
+  "kmhjnutility.config.modules.show_item_id": "Mostra ID do Item",
+  "kmhjnutility.config.modules.hide_bossbars": "Ocultar Baras dos Bosses",
+  "kmhjnutility.config.modules.hide_vignette": "Ocultar Vignette",
+  "kmhjnutility.config.modules.show_paperdoll": "Ocultar Paper Doll"
 }
