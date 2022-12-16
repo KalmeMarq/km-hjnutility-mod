@@ -1,23 +1,26 @@
-package me.kalmemarq.hjnutility.gui;
+package me.kalmemarq.hjnutility.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import me.kalmemarq.hjnutility.HJNUtilityMod;
+import me.kalmemarq.hjnutility.util.RenderUtil;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
-public class HJNTabButton extends HJNButton {
-    protected static final Identifier BG_TEXTURE = Identifier.of(HJNUtilityMod.MOD_ID, "textures/gui/hjn_utility.png");
+public class HJNTabButton extends ButtonWidget {
     private boolean selected;
+    private final int iconU, iconV;
 
-    protected HJNTabButton(int width, int iconU, int iconV, PressAction onPress) {
+    public HJNTabButton(int width, int iconU, int iconV, PressAction onPress) {
         this(0, 0, width, iconU, iconV, onPress);
     }
 
-    protected HJNTabButton(int x, int y, int width, int iconU, int iconV, PressAction onPress) {
-        super(x, y, width, iconU, iconV, onPress);
+    public HJNTabButton(int x, int y, int width, int iconU, int iconV, PressAction onPress) {
+        super(x, y, width, 18, Text.empty(), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
+        this.iconU = iconU;
+        this.iconV = iconV;
     }
 
     public void setSelected(boolean selected) {
@@ -31,11 +34,11 @@ public class HJNTabButton extends HJNButton {
         fill(matrices, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight(), 0xFF_000000);
 
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, BG_TEXTURE);
+        RenderSystem.setShaderTexture(0, HJNUtilityMod.HJN_TEXTURE);
         drawTexture(matrices, this.getX() + this.getWidth() / 2 - 8, this.getY() + this.getHeight() / 2 - 8, (float) this.iconU, (float) this.iconV, 16, 16, 256, 256);
 
         if (this.isHovered()) {
-            RenderUtil.drawNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 32, 0, 16, 16, BG_NS_INFO);
+            RenderUtil.drawNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 32, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO);
         }
 
         if (this.selected && !this.isHovered()) {

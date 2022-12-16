@@ -1,4 +1,4 @@
-package me.kalmemarq.hjnutility.gui;
+package me.kalmemarq.hjnutility.util;
 
 import org.joml.Matrix4f;
 

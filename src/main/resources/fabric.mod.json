@@ -20,7 +20,7 @@
       "me.kalmemarq.hjnutility.HJNUtilityMod"
     ],
     "client": [
-      "me.kalmemarq.hjnutility.HJNUtilityClient"
+      "me.kalmemarq.hjnutility.client.HJNUtilityClientMod"
     ],
     "modmenu": [
       "me.kalmemarq.hjnutility.HJNUtilityModMenuIntegration"

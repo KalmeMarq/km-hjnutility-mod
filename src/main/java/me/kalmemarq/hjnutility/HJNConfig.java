@@ -15,8 +15,8 @@ public class HJNConfig implements ConfigData {
 
     public enum CrosshairModifier {
         Inverted,
-        White,
         Chroma,
+        White,
         Red,
         Green,
         Blue,

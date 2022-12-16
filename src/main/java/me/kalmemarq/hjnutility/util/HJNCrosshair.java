@@ -1,4 +1,6 @@
-package me.kalmemarq.hjnutility;
+package me.kalmemarq.hjnutility.util;
+
+import me.kalmemarq.hjnutility.HJNConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
