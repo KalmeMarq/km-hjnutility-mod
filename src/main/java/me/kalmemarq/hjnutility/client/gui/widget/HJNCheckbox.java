@@ -11,8 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
-public class HJNCheckbox extends PressableWidget {
-    protected boolean toggled;
+public class HJNCheckbox extends HJNToggle {
     @Nullable
     private SaveConsumer saveConsumer;
 
@@ -20,8 +19,8 @@ public class HJNCheckbox extends PressableWidget {
         return new HJNCheckbox.Builder(message, defaultValue, saveConsumer);
     }
 
-    protected HJNCheckbox(int x, int y, int width, int height, Text message, boolean defaultValue) {
-        super(x, y, width, height, message);
+    protected HJNCheckbox(int x, int y, int width, int height, Text message, @Nullable PressAction onPress, boolean defaultValue) {
+        super(x, y, width, height, message, onPress);
         this.toggled = defaultValue;
     }
 
@@ -29,14 +28,16 @@ public class HJNCheckbox extends PressableWidget {
         this.saveConsumer = saveConsumer;
     }
 
-    public void setToggled(boolean toggled) {
-        this.toggled = toggled;
+    public HJNCheckbox setToggled(boolean toggled) {
+        super.setToggled(toggled);
         if (this.saveConsumer != null) this.saveConsumer.save(toggled);
+        return this;
     }
 
     @Override
     public void onPress() {
-        this.setToggled(!this.toggled);
+        super.onPress();
+        this.setToggled(!this.isToggled());
     }
 
     @Override
@@ -71,7 +72,7 @@ public class HJNCheckbox extends PressableWidget {
         private final Text message;
         private int x;
         private int y;
-        private int width = 126;
+        private int width = 144;
         private int height = 15;
         private final boolean defaultValue;
         @Nullable
@@ -101,7 +102,7 @@ public class HJNCheckbox extends PressableWidget {
         }
 
         public HJNCheckbox build() {
-            HJNCheckbox widget = new HJNCheckbox(this.x, this.y, this.width, this.height, this.message, defaultValue);
+            HJNCheckbox widget = new HJNCheckbox(this.x, this.y, this.width, this.height, this.message, null, defaultValue);
             widget.setSaveConsumer(this.saveConsumer);
             return widget;
         }

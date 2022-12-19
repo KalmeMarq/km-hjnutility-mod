@@ -5,6 +5,7 @@ import me.kalmemarq.hjnutility.HJNUtilityMod;
 import me.kalmemarq.hjnutility.util.RenderUtil;
 import me.kalmemarq.hjnutility.client.gui.widget.HJNCheckbox;
 import me.kalmemarq.hjnutility.client.gui.widget.HJNThemeToggle;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,8 +14,8 @@ import net.minecraft.text.Text;
 public class HJNThemeConfigPage extends HJNConfigPage {
     private static final Text INFO = Text.translatable("kmhjnutility.config.themes.info");
 
-    public HJNThemeConfigPage(TextRenderer textRenderer, int x, int y, int width, int height) {
-        super(textRenderer, x, y, width, height, Text.translatable("kmhjnutility.config.themes.title"));
+    public HJNThemeConfigPage(MinecraftClient client, TextRenderer textRenderer, int x, int y, int width, int height) {
+        super(client, textRenderer, x, y, width, height, Text.translatable("kmhjnutility.config.themes.title"));
     }
 
     private HJNThemeToggle themeDefaultTgl;

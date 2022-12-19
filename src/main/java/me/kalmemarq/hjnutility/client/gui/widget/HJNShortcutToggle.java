@@ -18,7 +18,7 @@ public class HJNShortcutToggle extends HJNCheckbox {
     }
 
     protected HJNShortcutToggle(int x, int y, int width, int height, Icon icon, Text message, boolean defaultValue) {
-        super(x, y, width, height, message, defaultValue);
+        super(x, y, width, height, message, null, defaultValue);
         this.icon = icon;
     }
 
@@ -86,8 +86,8 @@ public class HJNShortcutToggle extends HJNCheckbox {
         private final Text message;
         private int x;
         private int y;
-        private int width = 82;
-        private int height = 38;
+        private int width = 69;
+        private int height = 43;
         private final boolean defaultValue;
         @Nullable
         private final SaveConsumer saveConsumer;

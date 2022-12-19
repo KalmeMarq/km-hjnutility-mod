@@ -77,7 +77,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
         if (player != null && HJNUtilityMod.config != null) {
             if (HJNUtilityMod.config.modules.showCompass) {
                 int y = scaledHeight - 2 - 14 - 2;
-                if (HJNUtilityMod.config.modules.showItemID) {
+                if (HJNUtilityMod.config.modules.showItemId) {
                     y -= 18;
                 }
 
@@ -99,7 +99,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
             if (showID) {
                 Item item = mainHand.getItem();
 
-                showID =  HJNUtilityMod.config.modules.showItemID;
+                showID =  HJNUtilityMod.config.modules.showItemId;
                 if (showID) {
                     Identifier itemID = Registries.ITEM.getId(item);
 

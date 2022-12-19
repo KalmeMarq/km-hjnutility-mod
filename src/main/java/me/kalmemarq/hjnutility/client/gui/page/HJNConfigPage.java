@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.kalmemarq.hjnutility.HJNConfig;
 import me.kalmemarq.hjnutility.HJNUtilityMod;
 import me.kalmemarq.hjnutility.util.RenderUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.WrapperWidget;
@@ -16,12 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HJNConfigPage extends WrapperWidget {
+    protected MinecraftClient client;
     protected TextRenderer textRenderer;
     private final List<ClickableWidget> children;
     protected Text title;
     protected int titleWidth;
 
-    public HJNConfigPage(TextRenderer textRenderer, int x, int y, int width, int height, MutableText title) {
+    public HJNConfigPage(MinecraftClient client, TextRenderer textRenderer, int x, int y, int width, int height, MutableText title) {
         super(x, y, width, height, Text.empty());
         this.textRenderer = textRenderer;
         this.title = title.formatted(Formatting.UNDERLINE);
@@ -42,7 +44,7 @@ public class HJNConfigPage extends WrapperWidget {
 
     protected void renderPage(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (HJNUtilityMod.config.themes.theme != HJNConfig.Theme.Bedrock) {
-            int bgColor = HJNUtilityMod.config.themes.theme == HJNConfig.Theme.Default ? 0xAA_0A0A0A : 0xFF_3E3E3F;
+            int bgColor = HJNUtilityMod.config.themes.theme == HJNConfig.Theme.Default ? 0x99_0A0A0A : 0xFF_3E3E3F;
             fill(matrices, getX(), getY(), getX() + getWidth(), getY() + getHeight(), bgColor);
         }
 

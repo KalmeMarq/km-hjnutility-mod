@@ -11,19 +11,18 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
-public class HJNContentToggle extends HJNCheckbox {
+public class HJNContentToggle extends HJNToggle {
     @Nullable
     private ToggleContent content;
-    private HJNThemeToggle.PressAction onPress;
 
-    public static HJNContentToggle.Builder builder(boolean defaultValue, HJNThemeToggle.PressAction onPress) {
+    public static HJNContentToggle.Builder builder(boolean defaultValue, PressAction onPress) {
         return new HJNContentToggle.Builder(defaultValue, onPress);
     }
 
-    protected HJNContentToggle(int x, int y, int width, int height, boolean defaultValue, @Nullable ToggleContent content, HJNThemeToggle.PressAction onPress) {
-        super(x, y, width, height, Text.empty(), defaultValue);
+    protected HJNContentToggle(int x, int y, int width, int height, boolean defaultValue, @Nullable ToggleContent content, PressAction onPress) {
+        super(x, y, width, height, Text.empty(), onPress);
         this.content = content;
-        this.onPress = onPress;
+        this.toggled = defaultValue;
     }
 
     public void tick() {
@@ -40,17 +39,12 @@ public class HJNContentToggle extends HJNCheckbox {
         RenderUtil.drawColoredNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 0, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO, 0xFF000000);
 
         if (this.isHovered() || this.toggled) {
-            RenderUtil.drawNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 48, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO);
+            RenderUtil.drawNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 96, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO);
         }
 
         if (this.content != null) {
             this.content.render(matrices, this, mouseX, mouseY, delta);
         }
-    }
-
-    @Override
-    public void onPress() {
-        this.onPress.onPress(this);
     }
 
     static abstract class ToggleContent extends DrawableHelper {
@@ -124,11 +118,11 @@ public class HJNContentToggle extends HJNCheckbox {
         private int width = 100;
         private int height = 20;
         private final boolean defaultValue;
-        private final HJNThemeToggle.PressAction onPress;
+        private final PressAction onPress;
         @Nullable
         private ToggleContent content;
 
-        public Builder(boolean defaultValue, HJNThemeToggle.PressAction onPress) {
+        public Builder(boolean defaultValue, PressAction onPress) {
             this.defaultValue = defaultValue;
             this.onPress = onPress;
         }

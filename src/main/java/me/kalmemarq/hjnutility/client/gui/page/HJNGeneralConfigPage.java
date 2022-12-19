@@ -2,20 +2,23 @@ package me.kalmemarq.hjnutility.client.gui.page;
 
 import me.kalmemarq.hjnutility.HJNUtilityMod;
 import me.kalmemarq.hjnutility.client.gui.widget.HJNShortcutToggle;
+import me.kalmemarq.hjnutility.util.Anchor;
+import me.kalmemarq.hjnutility.util.HJNUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;
 
 public class HJNGeneralConfigPage extends HJNConfigPage {
-    public HJNGeneralConfigPage(TextRenderer textRenderer, int x, int y, int width, int height) {
-        super(textRenderer, x, y, width, height, Text.translatable("kmhjnutility.config.general.title"));
+    public HJNGeneralConfigPage(MinecraftClient client, TextRenderer textRenderer, int x, int y, int width, int height) {
+        super(client, textRenderer, x, y, width, height, Text.translatable("kmhjnutility.config.general.title"));
     }
 
     @Override
     protected void init() {
-        GridWidget grid = new GridWidget(getX() + 2, getY() + 20);
+        GridWidget grid = new GridWidget(0, 0);
         grid.getMainPositioner().marginX(1).marginY(1);
-        GridWidget.Adder adder = grid.createAdder(3);
+        GridWidget.Adder adder = grid.createAdder(4);
 
         adder.add(HJNShortcutToggle.builder(
                 HJNShortcutToggle.Icon.create(208, 32),
@@ -48,6 +51,7 @@ public class HJNGeneralConfigPage extends HJNConfigPage {
                 newValue -> HJNUtilityMod.config.general.statusHud = newValue).build());
 
         grid.recalculateDimensions();
+        HJNUtil.setAnchoredPos(grid, getX(), getY() + 26, getX() + getWidth(), getY() + getHeight(), Anchor.TOP_MIDDLE, Anchor.TOP_MIDDLE);
         this.add(grid);
     }
 }

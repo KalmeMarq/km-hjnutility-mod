@@ -9,24 +9,18 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 public class HJNThemeToggle extends HJNCheckbox {
     private HJNConfig.Theme theme;
-    private PressAction onPress;
 
     public static HJNThemeToggle.Builder builder(HJNConfig.Theme theme, boolean defaultValue, PressAction onPress) {
         return new Builder(theme, defaultValue, onPress);
     }
 
-    protected HJNThemeToggle(int x, int y, int width, int height, HJNConfig.Theme theme, boolean defaultValue, PressAction onPress) {
-        super(x, y, width, height, Text.empty(), defaultValue);
+    protected HJNThemeToggle(int x, int y, int width, int height, HJNConfig.Theme theme, boolean defaultValue, @Nullable PressAction onPress) {
+        super(x, y, width, height, Text.empty(), onPress, defaultValue);
         this.theme = theme;
-        this.onPress = onPress;
-    }
-
-    @Override
-    public void onPress() {
-        this.onPress.onPress(this);
     }
 
     @Override
@@ -57,11 +51,6 @@ public class HJNThemeToggle extends HJNCheckbox {
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         RenderUtil.drawCenteredText(matrices, textRenderer, this.getMessage(), this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2 + 20, 0xFF_FFFFFF);
-    }
-
-    @FunctionalInterface
-    public interface PressAction {
-        void onPress(HJNCheckbox widget);
     }
 
     public static class Builder {
