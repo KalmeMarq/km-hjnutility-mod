@@ -46,6 +46,21 @@ public class HJNUtilityScreen extends Screen {
         bgX = (this.width - bgW) / 2;
         bgY = (this.height - bgH) / 2;
 
+        HJNStackWidget buttonStack = new HJNStackWidget();
+        buttonStack.setColumnGap(2);
+
+        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 64, 32, 16, 16, button -> {
+        }));
+
+        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 48, 16, 16, 16, button -> {
+            client.setScreen(this.parentScreen);
+            this.saveConfig();
+        }));
+
+        buttonStack.recalculateDimensions();
+        HJNUtil.setAnchoredPos(buttonStack, bgX + 5, bgY + 5, bgX + bgW, bgY + bgH, Anchor.TOP_LEFT, Anchor.TOP_LEFT);
+        this.addDrawableChild(buttonStack);
+
         this.tabManager.clearReset();
         this.tabs.clear();
 
@@ -60,23 +75,8 @@ public class HJNUtilityScreen extends Screen {
         tabStack.setColumnGap(2);
         tabs.forEach(tabStack::add);
         tabStack.recalculateDimensions();
-        HJNUtil.setAnchoredPos(tabStack, bgX + 5, bgY + 4, bgX + bgW, bgY + bgH, Anchor.TOP_LEFT, Anchor.TOP_LEFT);
+        HJNUtil.setAnchoredPos(tabStack, bgX, bgY, bgX + bgW - 5, bgY + bgH, Anchor.TOP_RIGHT, Anchor.TOP_RIGHT);
         this.addDrawableChild(tabStack);
-
-        HJNStackWidget buttonStack = new HJNStackWidget();
-        buttonStack.setColumnGap(2);
-
-        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 64, 32, 16, 16, button -> {
-        }));
-
-        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 48, 16, 16, 16, button -> {
-            client.setScreen(this.parentScreen);
-            this.saveConfig();
-        }));
-
-        buttonStack.recalculateDimensions();
-        HJNUtil.setAnchoredPos(buttonStack, bgX, bgY + 5, bgX + bgW - 5, bgY + bgH + 5, Anchor.TOP_RIGHT, Anchor.TOP_RIGHT);
-        this.addDrawableChild(buttonStack);
 
         int pageX = bgX + 5;
         int pageY = bgY + 27;

@@ -1,7 +1,17 @@
 package me.kalmemarq.hjnutility.util;
 
+import me.kalmemarq.hjnutility.client.gui.widget.HJNLabelWidget;
+import me.kalmemarq.hjnutility.client.gui.widget.HJNStackWidget;
+import me.kalmemarq.hjnutility.client.gui.widget.HJNWidget;
+import me.kalmemarq.hjnutility.util.nonsense.Length;
+import me.kalmemarq.hjnutility.util.nonsense.LengthCollector;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import org.joml.Vector2i;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class HJNUtil {
     public static void setPos(ClickableWidget widget, int left, int top, int right, int bottom) {
@@ -41,21 +51,26 @@ public class HJNUtil {
         widget.setPos(x, y);
     }
 
-    public static class HJNElementWrapper<T extends ClickableWidget> {
-        private T widget;
+    public static class HJNElementWrapper<T extends ClickableWidget & HJNWidget> {
+        private final T widget;
         private Vector2i offset = new Vector2i();
+        private LengthCollector offsetX = new LengthCollector();
+        private LengthCollector offsetY = new LengthCollector();
+        private LengthCollector sizeWidth = new LengthCollector();
+        private LengthCollector sizeHeight = new LengthCollector();
         private Anchor anchorFrom = Anchor.CENTER;
         private Anchor anchorTo = Anchor.CENTER;
 
         public HJNElementWrapper(T widget) {
             this.widget = widget;
+
+            if (widget instanceof HJNLabelWidget) {
+                this.setSizeWidth(LengthCollector.of(Length.lenDefault()));
+                this.setSizeHeight(LengthCollector.of(Length.pixel(9)));
+            }
         }
 
-        public HJNElementWrapper setX(int parX, int parW) {
-            return setX(parX, parW, true);
-        }
-
-        public HJNElementWrapper setX(int parX, int parW, boolean allowOffset) {
+        public HJNElementWrapper<T> setX(int parX, int parW) {
             int x = parX;
 
             if (anchorFrom.isVMiddle()) {
@@ -70,19 +85,13 @@ public class HJNUtil {
                 x -= widget.getWidth();
             }
 
-            if (allowOffset) {
-                x += offset.get(0);
-            }
+            x += offset.get(0);
 
-            this.widget.setX(x);
+            this.widget.setX(x + this.offsetX.recalculateLength(parW, widget.getDefaultSize()));
             return this;
         }
 
-        public HJNElementWrapper setY(int parY, int parH) {
-            return setY(parY, parH, true);
-        }
-
-        public HJNElementWrapper setY(int parY, int parH, boolean allowOffset) {
+        public HJNElementWrapper<T> setY(int parY, int parH) {
             int y = parY;
 
             if (anchorFrom.isHMiddle()) {
@@ -97,28 +106,58 @@ public class HJNUtil {
                 y -= widget.getHeight();
             }
 
-            this.widget.setY(y + offset.get(1));
+            this.widget.setY(y + offset.get(1) + this.offsetY.recalculateLength(parH, widget.getDefaultSize()));
             return this;
         }
 
-        public HJNElementWrapper setAnchorFrom(Anchor anchorFrom) {
+        public HJNElementWrapper<T> setWidth(int parW) {
+            this.widget.setWidth(this.sizeWidth.recalculateLength(parW, widget.getDefaultSize()));
+            return this;
+        }
+
+        public HJNElementWrapper<T> setHeight(int parH) {
+            this.widget.setHeight(this.sizeHeight.recalculateLength(parH, widget.getDefaultSize()));
+            return this;
+        }
+
+        public HJNElementWrapper<T> setAnchorFrom(Anchor anchorFrom) {
             this.anchorFrom = anchorFrom;
             return this;
         }
 
-        public HJNElementWrapper setAnchorTo(Anchor anchorTo) {
+        public HJNElementWrapper<T> setAnchorTo(Anchor anchorTo) {
             this.anchorTo = anchorTo;
             return this;
         }
 
-        public HJNElementWrapper setAnchor(Anchor anchorFrom, Anchor anchorTo) {
+        public HJNElementWrapper<T> setAnchor(Anchor anchorFrom, Anchor anchorTo) {
             this.anchorFrom = anchorFrom;
             this.anchorTo = anchorTo;
             return this;
         }
 
-        public HJNElementWrapper setOffset(int x, int y) {
+        public HJNElementWrapper<T> setOffset(int x, int y) {
             this.offset.set(x, y);
+            return this;
+        }
+
+        public HJNElementWrapper<T> setOffsetX(LengthCollector offsetX) {
+            this.offsetX = offsetX;
+            return this;
+        }
+
+        public HJNElementWrapper<T> setOffsetY(LengthCollector offsetY) {
+            this.offsetY = offsetY;
+            return this;
+        }
+
+        public HJNElementWrapper<T> setSizeWidth(LengthCollector sizeWidth) {
+            this.sizeWidth = sizeWidth;
+            return this;
+        }
+
+        public HJNElementWrapper<T> setSizeHeight(LengthCollector sizeHeight) {
+            this.sizeHeight = sizeHeight;
             return this;
         }
 

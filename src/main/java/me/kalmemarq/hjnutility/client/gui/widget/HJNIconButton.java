@@ -8,7 +8,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-public class HJNIconButton extends ButtonWidget {
+public class HJNIconButton extends ButtonWidget implements HJNWidget {
     private int iconU;
     private int iconV;
     private int iconW;
@@ -35,5 +35,9 @@ public class HJNIconButton extends ButtonWidget {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, HJNUtilityMod.HJN_TEXTURE);
         drawTexture(matrices, this.getX() + (this.getWidth() - iconW) / 2, this.getY() + (this.getHeight() - iconH)/ 2, (float) this.iconU, (float) this.iconV, this.iconW, this.iconH, 256, 256);
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

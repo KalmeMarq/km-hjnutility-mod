@@ -27,15 +27,16 @@ public class HJNStackWidget extends WrapperWidget {
         this.elements = new ArrayList<>();
     }
 
-    public <T extends ClickableWidget> T add(T widget) {
+    public <T extends ClickableWidget & HJNWidget> T add(T widget) {
         this.children.add(widget);
         this.elements.add(new HJNStackElement<>(widget));
         return widget;
     }
 
-    public <T extends ClickableWidget> HJNUtil.HJNElementWrapper<T> addElement(HJNStackElement<T> element) {
+    public <T extends ClickableWidget & HJNWidget> HJNUtil.HJNElementWrapper<T> addElement(HJNStackElement<T> element) {
         this.children.add(element.getWidget());
         this.elements.add(element);
+        element.setOffset(0, 0);
         return element;
     }
 
@@ -79,8 +80,7 @@ public class HJNStackWidget extends WrapperWidget {
             for (int i = 0; i < this.elements.size(); i++) {
                 int elW = this.elements.get(i).getWidth();
 
-                this.elements.get(i).setInternalX(w);
-                this.elements.get(i).setInternalY(0);
+                this.elements.get(i).setOffset(w, 0);
 
                 w += elW;
 
@@ -98,8 +98,7 @@ public class HJNStackWidget extends WrapperWidget {
             for (int i = 0; i < this.elements.size(); i++) {
                 int elH = this.elements.get(i).getWidth();
 
-                this.elements.get(i).setInternalX(0);
-                this.elements.get(i).setInternalY(this.getY() + h);
+                this.elements.get(i).setOffset(0, h);
 
                 h += elH;
 
@@ -136,31 +135,20 @@ public class HJNStackWidget extends WrapperWidget {
         HORIZONTAL
     }
 
-    static class HJNStackElement<T extends ClickableWidget> extends HJNUtil.HJNElementWrapper<T> {
-        private int internalX;
-        private int internalY;
-
+    static class HJNStackElement<T extends ClickableWidget & HJNWidget> extends HJNUtil.HJNElementWrapper<T> {
         public HJNStackElement(T widget) {
             super(widget);
         }
 
-        public void setInternalX(int internalX) {
-            this.internalX = internalX;
-        }
-
-        public void setInternalY(int internalY) {
-            this.internalY = internalY;
-        }
-
         @Override
-        public HJNUtil.HJNElementWrapper<T> setX(int parX, int parW) {
-            this.getWidget().setX(parX + internalX);
+        public HJNStackElement<T> setX(int parX, int parW) {
+            this.getWidget().setX(parX + getOffset().x);
             return this;
         }
 
         @Override
-        public HJNUtil.HJNElementWrapper<T> setY(int parY, int parH) {
-            this.getWidget().setY(parY + internalY);
+        public HJNStackElement<T> setY(int parY, int parH) {
+            this.getWidget().setY(parY + getOffset().y);
             return this;
         }
     }

@@ -26,11 +26,15 @@ public class RenderUtil {
     }
 
     public static void drawTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v) {
+        drawTexture(matrices, x, y, width, height, u, v, width, height);
+    }
+
+    public static void drawTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v, int regionWidth, int regionHeight) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
-        drawTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, width, height, u, v, width, height, 256, 256);
+        drawTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, width, height, u, v, regionWidth, regionHeight, 256, 256);
 
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }

@@ -6,7 +6,7 @@ import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
-public class HJNToggle extends PressableWidget {
+public class HJNToggle extends PressableWidget implements HJNWidget {
     protected boolean toggled;
     @Nullable
     private PressAction onPress;
@@ -44,5 +44,9 @@ public class HJNToggle extends PressableWidget {
     @FunctionalInterface
     public interface PressAction {
         void onPress(HJNToggle toggle);
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

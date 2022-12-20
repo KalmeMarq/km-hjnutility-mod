@@ -10,7 +10,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-public class HJNButton extends ButtonWidget {
+public class HJNButton extends ButtonWidget implements HJNWidget {
     public HJNButton(int x, int y, int width, int height, Text message, PressAction onPress) {
         super(x, y, width, height, message, onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
     }
@@ -31,5 +31,10 @@ public class HJNButton extends ButtonWidget {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         RenderUtil.drawCenteredText(matrices, textRenderer, this.getMessage(), this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2, 0xFF_FFFFFF);
+    }
+
+    @Override
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
