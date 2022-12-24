@@ -41,13 +41,15 @@ public class HJNConfig {
         Green,
         Blue,
         Yellow,
-        Aqua
+        Aqua,
+        Custom
     }
 
     public static class CrosshairMode {
         public float scale = 1.0f;
         public int crosshairIndex = 0;
         public CrosshairModifier modifier = CrosshairModifier.Inverted;
+        public int crosshairColor = 0xFF_FF_FF;
     }
 
     public enum Theme {

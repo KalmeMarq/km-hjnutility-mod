@@ -7,6 +7,7 @@ import me.kalmemarq.hjnutility.util.Anchor;
 import me.kalmemarq.hjnutility.util.HJNUtil;
 import me.kalmemarq.hjnutility.util.RenderUtil;
 import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.option.ChatVisibility;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;

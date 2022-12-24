@@ -16,6 +16,8 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
 public class RenderUtil {
+    public static int zOffset = 0;
+
     public static void drawCenteredText(MatrixStack matrices, TextRenderer textRenderer, Text text, int centerX, int y, int color) {
         OrderedText orderedText = text.asOrderedText();
         textRenderer.draw(matrices, orderedText, (float)(centerX - textRenderer.getWidth(orderedText) / 2), (float)y, color);
@@ -34,11 +36,15 @@ public class RenderUtil {
     }
 
     public static void drawTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+        drawTexture(matrices, x, y, 0, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
+    }
+
+    public static void drawTexture(MatrixStack matrices, int x, int y, int z, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
-        drawTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
+        drawTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, z, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
 
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
@@ -83,29 +89,29 @@ public class RenderUtil {
         }
 
         if (nx0 == 0 && ny0 == 0 && nx1 == 0 && ny1 == 0) {
-            drawTextureRegion(matrix, bufferBuilder, x, y, width, height, u, v, nBW, nBH, nTW, nTH);
+            drawTextureRegion(matrix, bufferBuilder, x, y, 0, width, height, u, v, nBW, nBH, nTW, nTH);
             BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             return;
         }
 
         // TopLeft
-        drawTextureRegion(matrix, bufferBuilder, x, y, nx0, ny0, u, v, nx0, ny0, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x, y, 0, nx0, ny0, u, v, nx0, ny0, nTW, nTH);
         // TopMiddle
-        drawTextureRegion(matrix, bufferBuilder, x + nx0, y, width - nx0 - nx1, ny0, u + nx0, v, nBW - nx0 - nx1, ny0, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x + nx0, y, 0, width - nx0 - nx1, ny0, u + nx0, v, nBW - nx0 - nx1, ny0, nTW, nTH);
         // TopRight
-        drawTextureRegion(matrix, bufferBuilder, x + width - nx1, y, nx1, ny0, u + nBW - nx1, v, nx1, ny0, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x + width - nx1, y, 0, nx1, ny0, u + nBW - nx1, v, nx1, ny0, nTW, nTH);
         // LeftMiddle
-        drawTextureRegion(matrix, bufferBuilder, x, y + ny0, nx0, height - ny0 - ny1, u, v + ny0, nx0, nBH - ny0 - ny1, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x, y + ny0, 0, nx0, height - ny0 - ny1, u, v + ny0, nx0, nBH - ny0 - ny1, nTW, nTH);
         // Center
-        drawTextureRegion(matrix, bufferBuilder, x + nx0, y + ny0, width - nx0 - nx1, height - ny0 - ny1, u + nx0, v + ny0, nBW - nx0 - nx1, nBH - ny0 - ny1, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x + nx0, y + ny0, 0, width - nx0 - nx1, height - ny0 - ny1, u + nx0, v + ny0, nBW - nx0 - nx1, nBH - ny0 - ny1, nTW, nTH);
         // RightMiddle
-        drawTextureRegion(matrix, bufferBuilder, x + width - nx1, y + ny0, nx1, height - ny0 - ny1, u + nBW - nx1, v + ny0, nx1, nBH - ny0 - ny1, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x + width - nx1, y + ny0, 0, nx1,  height - ny0 - ny1, u + nBW - nx1, v + ny0, nx1, nBH - ny0 - ny1, nTW, nTH);
         // BottomLeft
-        drawTextureRegion(matrix, bufferBuilder, x, y + height - ny1, nx0, ny1, u, v + nBH - ny1, nx0, ny1, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x, y + height - ny1, 0, nx0, ny1, u, v + nBH - ny1, nx0, ny1, nTW, nTH);
         // BottomMiddle
-        drawTextureRegion(matrix, bufferBuilder, x + nx0, y + height - ny1, width - nx0 - nx1, ny1, u + nx0, v + nBH - ny1, nBW - nx0 - nx1, ny1, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x + nx0, y + height - ny1, 0, width - nx0 - nx1, ny1, u + nx0, v + nBH - ny1, nBW - nx0 - nx1, ny1, nTW, nTH);
         // BottomRight
-        drawTextureRegion(matrix, bufferBuilder, x + width - nx1, y + height - ny1, nx1, ny1, u + nBW - nx1, v + nBH - ny1, nx1, ny1, nTW, nTH);
+        drawTextureRegion(matrix, bufferBuilder, x + width - nx1, y + height - ny1, 0, nx1, ny1, u + nBW - nx1, v + nBH - ny1, nx1, ny1, nTW, nTH);
 
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
@@ -134,7 +140,7 @@ public class RenderUtil {
         }
 
         if (nx0 == 0 && ny0 == 0 && nx1 == 0 && ny1 == 0) {
-            drawTextureRegion(matrix, bufferBuilder, x, y, width, height, u, v, nBW, nBH, nBW, nBH);
+            drawTextureRegion(matrix, bufferBuilder, x, y, 0, width, height, u, v, nBW, nBH, nBW, nBH);
             BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             RenderSystem.disableBlend();
             return;
@@ -163,7 +169,7 @@ public class RenderUtil {
         RenderSystem.disableBlend();
     }
 
-    private static void drawTextureRegion(Matrix4f matrix, BufferBuilder builder, int x, int y, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+    private static void drawTextureRegion(Matrix4f matrix, BufferBuilder builder, int x, int y, int z, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         int x0 = x;
         int x1 = x + width;
         int y0 = y;
@@ -174,10 +180,10 @@ public class RenderUtil {
         float u1 = (u + (float)regionWidth) / (float)textureWidth;
         float v1 = (v + (float)regionHeight) / (float)textureHeight;
 
-        builder.vertex(matrix, x0, y1, 0).texture(u0, v1).next();
-        builder.vertex(matrix, x1, y1, 0).texture(u1, v1).next();
-        builder.vertex(matrix, x1, y0, 0).texture(u1, v0).next();
-        builder.vertex(matrix, x0, y0, 0).texture(u0, v0).next();
+        builder.vertex(matrix, x0, y1, z).texture(u0, v1).next();
+        builder.vertex(matrix, x1, y1, z).texture(u1, v1).next();
+        builder.vertex(matrix, x1, y0, z).texture(u1, v0).next();
+        builder.vertex(matrix, x0, y0, z).texture(u0, v0).next();
     }
 
     private static void drawColoredTextureRegion(Matrix4f matrix, BufferBuilder builder, int x, int y, int z, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color) {
@@ -197,10 +203,10 @@ public class RenderUtil {
         int g = color >> 8 & 0xFF;
         int b = color & 0xFF;
 
-        builder.vertex(matrix, x0, y1, 0).color(r, g, b, a).texture(u0, v1).next();
-        builder.vertex(matrix, x1, y1, 0).color(r, g, b, a).texture(u1, v1).next();
-        builder.vertex(matrix, x1, y0, 0).color(r, g, b, a).texture(u1, v0).next();
-        builder.vertex(matrix, x0, y0, 0).color(r, g, b, a).texture(u0, v0).next();
+        builder.vertex(matrix, x0, y1, z).color(r, g, b, a).texture(u0, v1).next();
+        builder.vertex(matrix, x1, y1, z).color(r, g, b, a).texture(u1, v1).next();
+        builder.vertex(matrix, x1, y0, z).color(r, g, b, a).texture(u1, v0).next();
+        builder.vertex(matrix, x0, y0, z).color(r, g, b, a).texture(u0, v0).next();
     }
 
     public record NinesliceInfo(int ninesliceX0, int ninesliceY0, int ninesliceX1, int ninesliceY1, int textureWidth, int textureHeight) {}
@@ -216,5 +222,28 @@ public class RenderUtil {
         float f4 = (lightness - a * Math.max(-1.0f, Math.min(k4 - 3, Math.min(9 - k4, 1))));
 
         return ((int)(255 * f0)) << 16 | ((int)(255 * f8)) << 8 | ((int)(255 * f4));
+    }
+
+    public static void fill(MatrixStack matrices, int x, int y, int width, int height, int color) {
+        Matrix4f matrix = matrices.peek().getPositionMatrix();
+
+        float a = (float)(color >> 24 & 255) / 255.0F;
+        float r = (float)(color >> 16 & 255) / 255.0F;
+        float g = (float)(color >> 8 & 255) / 255.0F;
+        float b = (float)(color & 255) / 255.0F;
+
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex(matrix, (float)x, (float)(y + height), 0.0F).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, (float)(x + width), (float)(y + height), 0.0F).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, (float)(x + width), (float)y, 0.0F).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, (float)x, (float)y, 0.0F).color(r, g, b, a).next();
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
     }
 }

@@ -97,7 +97,7 @@ public class HJNCrosshairConfigPage extends HJNConfigPage {
         ToggleGroupManager modifierManager = new ToggleGroupManager();
 
         var modifiers = HJNConfig.CrosshairModifier.values();
-        for (int i = 0; i < modifiers.length; i++) {
+        for (int i = 0; i < modifiers.length - 1; i++) {
             HJNContentToggle toggle = HJNContentToggle.builder(HJNUtilityMod.config.crosshairs.modifier == modifiers[i], widget -> {
             }).setContent(new HJNContentToggle.TextToggleContent(MODIFIER_TEXTS[i], modifiers[i] == HJNConfig.CrosshairModifier.Chroma)).size(71, 17).build();
 
