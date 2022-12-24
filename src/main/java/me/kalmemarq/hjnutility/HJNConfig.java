@@ -3,6 +3,7 @@ package me.kalmemarq.hjnutility;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.kalmemarq.hjnutility.util.Anchor;
 import me.kalmemarq.hjnutility.util.HJNCrosshair;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.math.MathHelper;
@@ -31,6 +32,13 @@ public class HJNConfig {
         public boolean hideBossBars = false;
         public boolean hideVignette = false;
         public boolean hideTooltips = false;
+
+        public ModuleSettings itemIdSettings = new ModuleSettings();
+        public ModuleSettings compassSettings = new ModuleSettings();
+        public ModuleSettings armorHudSettings = new ModuleSettings();
+        public ModuleSettings mainHandSettings = new ModuleSettings();
+        public ModuleSettings statusSettings = new ModuleSettings();
+        public ModuleSettings paperDollSettings = new PaperDollModuleSettings();
     }
 
     public enum CrosshairModifier {
@@ -61,6 +69,16 @@ public class HJNConfig {
     public static class Themes {
         public Theme theme = Theme.Default;
         public boolean hideScreenBackground = false;
+    }
+
+    public static class ModuleSettings {
+        public int x;
+        public int y;
+        public Anchor anchor;
+    }
+
+    public static class PaperDollModuleSettings extends ModuleSettings {
+        public float scale;
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setLenient().create();

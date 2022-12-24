@@ -9,7 +9,10 @@ import me.kalmemarq.hjnutility.util.RenderUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +23,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 
 import java.util.Iterator;
 
@@ -45,6 +49,7 @@ public class HJNInGameHud {
         renderItemIdCompass(height, tickDelta, player, matrices, itemRenderer);
         renderMainHand(player, width, height, matrices, itemRenderer, tickDelta);
         renderArmorHud(player, width, height, matrices, itemRenderer, tickDelta);
+        renderPaperDoll(height, player);
     }
 
     private static void renderArmorHud(@Nullable PlayerEntity player, int width, int height, MatrixStack matrices, ItemRenderer itemRenderer, float tickDelta) {
@@ -208,8 +213,77 @@ public class HJNInGameHud {
         }
     }
 
-    private static void renderPaperDoll() {
+    private static void renderPaperDoll(int height, PlayerEntity entity) {
+        if (entity == null || !HJNUtilityMod.config.modules.showPaperdoll) return;
+        if (!MinecraftClient.getInstance().options.getPerspective().isFirstPerson()) return;
+        if (MinecraftClient.getInstance().options.debugEnabled) return;
 
+        int x = 1 + 20;
+        int y = height / 2 - 10;
+        int size = 20;
+
+        float rotS = (float)Math.atan((double)(-20 / 40.0F));
+        float rotU = (float)Math.atan((double)(-20 / 40.0F));
+
+        MatrixStack matrixStack = RenderSystem.getModelViewStack();
+        matrixStack.push();
+
+        matrixStack.translate((float)x, (float)y, 1050.0F);
+        matrixStack.scale(1.0F, 1.0F, -1.0F);
+        RenderSystem.applyModelViewMatrix();
+        MatrixStack matrixStack2 = new MatrixStack();
+        matrixStack2.translate(0.0F, 0.0F, 1000.0F);
+        matrixStack2.scale((float)size, (float)size, (float)size);
+        Quaternionf quaternionf = (new Quaternionf()).rotateZ(3.1415927F);
+        Quaternionf quaternionf2 = (new Quaternionf()).rotateX(rotU * 20.0F * 0.017453292F);
+        quaternionf.mul(quaternionf2);
+        matrixStack2.multiply(quaternionf);
+
+        float h = entity.bodyYaw;
+        float i = entity.getYaw();
+        float j = entity.getPitch();
+        float k = entity.prevHeadYaw;
+        float l = entity.headYaw;
+        float pBodyYaw = entity.prevBodyYaw;
+        float pYaw = entity.prevYaw;
+
+        entity.bodyYaw = 180.0F + rotS * 20.0F;
+        entity.setYaw(180.0F + rotS * 40.0F);
+        entity.prevBodyYaw = entity.bodyYaw;
+        entity.prevYaw = entity.getYaw();
+
+        boolean isFree = true;
+
+        if (isFree) {
+            entity.headYaw = 180.0f + rotS * 40.0f - (h - l);
+            entity.prevHeadYaw = 180.0f + rotS * 40.0f - (pBodyYaw - k);
+        } else {
+            entity.headYaw = 180.0f + rotS * 40.0f - (i - l);
+            entity.prevHeadYaw = 18.0f + rotS * 40.0f - (pYaw - k);
+        }
+
+        DiffuseLighting.method_34742();
+        EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
+        quaternionf2.conjugate();
+        entityRenderDispatcher.setRotation(quaternionf2);
+        entityRenderDispatcher.setRenderShadows(false);
+        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+        entityRenderDispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, matrixStack2, immediate, 15728880);
+        immediate.draw();
+        entityRenderDispatcher.setRenderShadows(true);
+
+        entity.bodyYaw = h;
+        entity.setYaw(i);
+        entity.setPitch(j);
+        entity.prevHeadYaw = k;
+        entity.prevYaw = pYaw;
+        entity.headYaw = l;
+        entity.prevBodyYaw = pBodyYaw;
+
+        matrixStack.pop();
+
+        RenderSystem.applyModelViewMatrix();
+        DiffuseLighting.enableGuiDepthLighting();
     }
 
     public static void renderCrosshair$(InGameHud hud, int ticks, int width, int height, MatrixStack matrices) {

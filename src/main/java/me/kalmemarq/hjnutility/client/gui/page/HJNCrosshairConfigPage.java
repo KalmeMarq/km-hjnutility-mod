@@ -64,7 +64,7 @@ public class HJNCrosshairConfigPage extends HJNConfigPage {
         ToggleGroupManager crosshairManager = new ToggleGroupManager();
 
         HJNContentToggle defaultToggle = HJNContentToggle.builder(HJNUtilityMod.config.crosshairs.crosshairIndex == 0, button -> {
-        }).width(250).setContent(new HJNContentToggle.TextToggleContent(Text.translatable("kmhjnutility.config.crosshairs.default"))).build();
+        }).width(280).setContent(new HJNContentToggle.TextToggleContent(Text.translatable("kmhjnutility.config.crosshairs.default"))).build();
         this.crosshairToggles.add(chAdder.add(defaultToggle, 14));
 
         crosshairManager.add(0, defaultToggle);

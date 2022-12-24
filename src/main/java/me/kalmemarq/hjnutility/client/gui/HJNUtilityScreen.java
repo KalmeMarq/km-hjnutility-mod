@@ -55,8 +55,12 @@ public class HJNUtilityScreen extends Screen {
             this.saveConfig();
         }));
 
-        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 64, 32, 16, 16, button -> {
-        }));
+        if (!this.isPregame()) {
+            buttonStack.add(new HJNIconButton(0, 0, 20, 18, 64, 32, 16, 16, button -> {
+                client.setScreen(new HJNModuleSettingsScreen(this));
+                this.saveConfig();
+            }));
+        }
 
         buttonStack.recalculateDimensions();
         HJNUtil.setAnchoredPos(buttonStack, bgX + 5, bgY + 5, bgX + bgW, bgY + bgH, Anchor.TOP_LEFT, Anchor.TOP_LEFT);
