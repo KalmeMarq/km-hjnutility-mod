@@ -99,7 +99,7 @@ public class HJNCrosshairConfigPage extends HJNConfigPage {
         var modifiers = HJNConfig.CrosshairModifier.values();
         for (int i = 0; i < modifiers.length; i++) {
             HJNContentToggle toggle = HJNContentToggle.builder(HJNUtilityMod.config.crosshairs.modifier == modifiers[i], widget -> {
-            }).setContent(new HJNContentToggle.TextToggleContent(MODIFIER_TEXTS[i], modifiers[i] == HJNConfig.CrosshairModifier.Chroma)).size(61, 17).build();
+            }).setContent(new HJNContentToggle.TextToggleContent(MODIFIER_TEXTS[i], modifiers[i] == HJNConfig.CrosshairModifier.Chroma)).size(71, 17).build();
 
             modifierManager.add(i, toggle);
 

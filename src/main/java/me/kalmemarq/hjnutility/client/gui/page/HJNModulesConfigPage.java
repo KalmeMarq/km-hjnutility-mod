@@ -26,6 +26,7 @@ public class HJNModulesConfigPage extends HJNConfigPage {
         adder.add(HJNCheckbox.builder(Text.translatable("kmhjnutility.config.modules.hide_bossbars"), HJNUtilityMod.config.modules.hideBossBars, newValue -> HJNUtilityMod.config.modules.hideBossBars = newValue).build());
         adder.add(HJNCheckbox.builder(Text.translatable("kmhjnutility.config.modules.hide_vignette"), HJNUtilityMod.config.modules.hideVignette, newValue -> HJNUtilityMod.config.modules.hideVignette = newValue).build());
         adder.add(HJNCheckbox.builder(Text.translatable("kmhjnutility.config.modules.show_paperdoll"), HJNUtilityMod.config.modules.showPaperdoll, newValue -> HJNUtilityMod.config.modules.showPaperdoll = newValue).build());
+        adder.add(HJNCheckbox.builder(Text.translatable("kmhjnutility.config.modules.hide_tooltips"), HJNUtilityMod.config.modules.hideTooltips, newValue -> HJNUtilityMod.config.modules.hideTooltips = newValue).build());
 
         grid.recalculateDimensions();
         HJNUtil.setAnchoredPos(grid, getX(), getY() + 25, getX() + getWidth(), getY() + getHeight(), Anchor.TOP_MIDDLE, Anchor.TOP_MIDDLE);

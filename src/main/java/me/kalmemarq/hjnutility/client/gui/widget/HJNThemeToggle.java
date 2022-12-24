@@ -31,23 +31,23 @@ public class HJNThemeToggle extends HJNCheckbox {
         RenderUtil.drawColoredNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 0, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO, 0xFF000000);
 
         if (this.isHovered() || this.toggled) {
-            RenderUtil.drawNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 48, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO);
+            RenderUtil.drawNinesliceTexture(matrices, this.getX(), this.getY(), this.width, this.height, 96, 0, 16, 16, HJNUtilityMod.HJN_PANEL_INFO);
         }
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        int u = 0;
-        int v = 0;
-        if (theme == HJNConfig.Theme.Custom) {
-            u = 388;
-        } else if (theme == HJNConfig.Theme.Bedrock) {
-            v = 288;
-        }
-
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, HJNUtilityMod.HJN_THEME_TEXTURE);
-        drawTexture(matrices, this.getX() + 3, this.getY() + 3, this.getWidth() - 6, this.getHeight() - 6, u, v, 387, 287, 1024, 1024);
+//        int u = 0;
+//        int v = 0;
+//        if (theme == HJNConfig.Theme.Custom) {
+//            u = 388;
+//        } else if (theme == HJNConfig.Theme.Bedrock) {
+//            v = 288;
+//        }
+//
+//        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+//        RenderSystem.setShaderTexture(0, HJNUtilityMod.HJN_THEME_TEXTURE);
+//        drawTexture(matrices, this.getX() + 3, this.getY() + 3, this.getWidth() - 6, this.getHeight() - 6, u, v, 387, 287, 1024, 1024);
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         RenderUtil.drawCenteredText(matrices, textRenderer, this.getMessage(), this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2 + 20, 0xFF_FFFFFF);
@@ -57,8 +57,8 @@ public class HJNThemeToggle extends HJNCheckbox {
         private final HJNConfig.Theme theme;
         private int x;
         private int y;
-        private int width = 82;
-        private int height = 66;
+        private int width = 93;
+        private int height = 63;
         private final boolean defaultValue;
         private final PressAction onPress;
 

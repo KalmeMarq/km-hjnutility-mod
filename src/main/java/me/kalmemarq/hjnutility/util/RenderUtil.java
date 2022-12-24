@@ -30,21 +30,33 @@ public class RenderUtil {
     }
 
     public static void drawTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v, int regionWidth, int regionHeight) {
+        drawTexture(matrices, x, y, width, height, u, v, regionWidth, regionHeight, 256, 256);
+    }
+
+    public static void drawTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
-        drawTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, width, height, u, v, regionWidth, regionHeight, 256, 256);
+        drawTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
 
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
-    public static void drawColoredTexture(MatrixStack matrices, int x, int y, int z, int width, int height, int u, int v, int color) {
+    public static void drawColoredTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v, int color) {
+        drawColoredTexture(matrices, x, y, width, height, u, v, width, height, color);
+    }
+
+    public static void drawColoredTexture(MatrixStack matrices, int x, int y, int width, int height, int u, int v, int regionWidth, int regionHeight, int color) {
+        drawColoredTexture(matrices, x, y, 0, width, height, u, v, regionWidth, regionHeight, 256, 256,  color);
+    }
+
+    public static void drawColoredTexture(MatrixStack matrices, int x, int y, int z, int width, int height, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color) {
         RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 
-        drawColoredTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, z, width, height, u, v, width, height, 256, 256, color);
+        drawColoredTextureRegion(matrices.peek().getPositionMatrix(), bufferBuilder, x, y, z, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight, color);
 
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }

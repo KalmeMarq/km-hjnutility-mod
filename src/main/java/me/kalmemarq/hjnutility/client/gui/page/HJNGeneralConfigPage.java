@@ -8,17 +8,23 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 public class HJNGeneralConfigPage extends HJNConfigPage {
     public HJNGeneralConfigPage(MinecraftClient client, TextRenderer textRenderer, int x, int y, int width, int height) {
         super(client, textRenderer, x, y, width, height, Text.translatable("kmhjnutility.config.general.title"));
     }
 
+    @Nullable
+    private GridWidget mainGrid;
+
     @Override
     protected void init() {
-        GridWidget grid = new GridWidget(0, 0);
-        grid.getMainPositioner().marginX(1).marginY(1);
-        GridWidget.Adder adder = grid.createAdder(4);
+        if (this.mainGrid != null) return;
+
+        mainGrid = new GridWidget(0, 0);
+        mainGrid.getMainPositioner().marginX(1).marginY(1);
+        GridWidget.Adder adder = mainGrid.createAdder(4);
 
         adder.add(HJNShortcutToggle.builder(
                 HJNShortcutToggle.Icon.create(208, 32),
@@ -50,8 +56,18 @@ public class HJNGeneralConfigPage extends HJNConfigPage {
                 HJNUtilityMod.config.general.statusHud,
                 newValue -> HJNUtilityMod.config.general.statusHud = newValue).build());
 
-        grid.recalculateDimensions();
-        HJNUtil.setAnchoredPos(grid, getX(), getY() + 26, getX() + getWidth(), getY() + getHeight(), Anchor.TOP_MIDDLE, Anchor.TOP_MIDDLE);
-        this.add(grid);
+        mainGrid.recalculateDimensions();
+        HJNUtil.setAnchoredPos(mainGrid, getX(), getY() + 26, getX() + getWidth(), getY() + getHeight(), Anchor.TOP_MIDDLE, Anchor.TOP_MIDDLE);
+        this.add(mainGrid);
+    }
+
+    @Override
+    public void resize(int pageX, int pageY, int pageW, int pageH) {
+        super.resize(pageX, pageY, pageW, pageH);
+
+        if (this.mainGrid != null) {
+            mainGrid.recalculateDimensions();
+            HJNUtil.setAnchoredPos(mainGrid, getX(), getY() + 26, getX() + getWidth(), getY() + getHeight(), Anchor.TOP_MIDDLE, Anchor.TOP_MIDDLE);
+        }
     }
 }

@@ -89,9 +89,10 @@ public class HJNImageWidget extends ClickableWidget implements HJNWidget {
         int tH = getHeight();
 
         if (this.ninesliceInfo == null) {
-
+            if (colored) RenderUtil.drawTexture(matrices, getX(), getY(), tW, tH, 0, 0, info.getTextureWidth(), info.getTextureHeight(), info.getTextureWidth(), info.getTextureHeight());
+            else RenderUtil.drawColoredTexture(matrices, getX(), getY(), 0, tW, tH, 0, 0, info.getTextureWidth(), info.getTextureHeight(), info.getTextureWidth(), info.getTextureHeight(), tintColor);
         } else {
-//            RenderUtil.drawNinesliceTexture(matrices, getX(), getY(), info);
+//            RenderUtil.drawNinesliceTexture(matrices, getX(), getY(), );
         }
 
         RenderSystem.defaultBlendFunc();

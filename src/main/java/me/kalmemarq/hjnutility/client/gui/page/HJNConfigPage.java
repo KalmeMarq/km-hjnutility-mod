@@ -56,6 +56,12 @@ public class HJNConfigPage extends WrapperWidget {
         RenderUtil.drawCenteredText(matrices, textRenderer, this.title, getX() + getWidth() / 2, getY() + 7, 0xFF_FFFFFF);
     }
 
+    public void resize(int pageX, int pageY, int pageW, int pageH) {
+        this.setPos(pageX, pageY);
+        this.setWidth(pageW);
+        this.height = pageH;
+    }
+
     @Override
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderPage(matrices, mouseX, mouseY, delta);

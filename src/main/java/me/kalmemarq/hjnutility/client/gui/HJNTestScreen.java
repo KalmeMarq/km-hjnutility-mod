@@ -1,6 +1,7 @@
 package me.kalmemarq.hjnutility.client.gui;
 
 import me.kalmemarq.hjnutility.client.gui.widget.HJNButton;
+import me.kalmemarq.hjnutility.client.gui.widget.HJNImageWidget;
 import me.kalmemarq.hjnutility.client.gui.widget.HJNLabelWidget;
 import me.kalmemarq.hjnutility.client.gui.widget.HJNPanelWidget;
 import me.kalmemarq.hjnutility.util.Anchor;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class HJNTestScreen extends Screen {
     private final Screen parentScreen;
@@ -24,7 +26,7 @@ public class HJNTestScreen extends Screen {
     protected void init() {
         HJNPanelWidget panel = new HJNPanelWidget();
 
-        HJNButton buttonTest = new HJNButton(0, 0, 100, 20, Text.literal("Test Button"), button -> {
+        HJNButton buttonTest = new HJNButton(0, 0, 100, 20, Text.literal("Offset[20, 20] Anchor[top_left] Size[100% - 40, 20]"), button -> {
             this.client.setScreen(this.parentScreen);
         });
 
@@ -36,13 +38,24 @@ public class HJNTestScreen extends Screen {
                 .setAnchor(Anchor.TOP_LEFT, Anchor.TOP_LEFT)
         );
 
-        HJNLabelWidget labelTest = new HJNLabelWidget(textRenderer, Text.literal("Test Label"));
+        HJNLabelWidget labelTest = new HJNLabelWidget(textRenderer, Text.literal("Offset[0, 50%] Size[100%, 9] TextAlign[center] Anchor[top_left]"));
         labelTest.setAlignment(HJNLabelWidget.TextAlignment.CENTER);
 
         panel.add(new HJNUtil.HJNElementWrapper<>(labelTest)
             .setOffsetY(LengthCollector.of(Length.relative(0.5f)))
             .setSizeWidth(LengthCollector.of(Length.relative(1.0f)))
             .setAnchor(Anchor.TOP_LEFT, Anchor.TOP_LEFT)
+        );
+
+        HJNImageWidget imgTest = new HJNImageWidget();
+        imgTest.setInfo(new HJNImageWidget.ImageInfo(new Identifier("textures/gui/widgets.png")));
+        imgTest.setTintColor(0xFF_00_00);
+
+        panel.add(new HJNUtil.HJNElementWrapper<>(imgTest)
+            .setSizeWidth(LengthCollector.of(Length.pixel(128)))
+            .setSizeHeight(LengthCollector.of(Length.pixel(128)))
+            .setOffsetY(LengthCollector.of(Length.pixel(20)))
+            .setAnchor(Anchor.CENTER, Anchor.TOP_MIDDLE)
         );
 
         panel.recalculateDimensions(this.width, this.height);

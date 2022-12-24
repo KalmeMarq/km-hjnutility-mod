@@ -274,7 +274,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
                 }
 
                 RenderSystem.setShaderTexture(0, crosshairIndex == 0 ? GUI_ICONS_TEXTURE : HJN_TEXTURE);
-                RenderUtil.drawColoredTexture(matrixStack, x, y, getZOffset(), crosshair.getWidth(), crosshair.getHeight(), crosshair.getU(), crosshair.getV(), color);
+                RenderUtil.drawColoredTexture(matrixStack, x, y, getZOffset(), crosshair.getWidth(), crosshair.getHeight(), crosshair.getU(), crosshair.getV(), crosshair.getWidth(), crosshair.getHeight(), 256, 256, color);
             }
 
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);

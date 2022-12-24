@@ -9,3 +9,5 @@ Made by @KalmeMarq
 Original Author: @HJN
 
 Original Pixel Artist: @Chr7st
+
+Also the code is a mess

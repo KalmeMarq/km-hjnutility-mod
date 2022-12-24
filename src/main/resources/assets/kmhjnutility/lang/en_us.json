@@ -24,6 +24,7 @@
   "kmhjnutility.config.modules.hide_bossbars": "Hide \u00a7bBoss Bars\u00a7r",
   "kmhjnutility.config.modules.hide_vignette": "Hide \u00a7bVignette\u00a7r",
   "kmhjnutility.config.modules.show_paperdoll": "Hide \u00a7bPaper Doll\u00a7r",
+  "kmhjnutility.config.modules.hide_tooltips": "Hide \u00a7bTooltips\u00a7r",
   "kmhjnutility.config.themes.info": "\u00a7bChoose\u00a7r your favorite theme",
   "kmhjnutility.config.themes.theme.default": "Default",
   "kmhjnutility.config.themes.theme.custom": "Custom",

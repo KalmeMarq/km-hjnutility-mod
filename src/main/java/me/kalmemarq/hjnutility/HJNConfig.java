@@ -3,7 +3,9 @@ package me.kalmemarq.hjnutility;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.kalmemarq.hjnutility.util.HJNCrosshair;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.math.MathHelper;
 
 import java.io.*;
 
@@ -28,6 +30,7 @@ public class HJNConfig {
         public boolean showCompass = false;
         public boolean hideBossBars = false;
         public boolean hideVignette = false;
+        public boolean hideTooltips = false;
     }
 
     public enum CrosshairModifier {
@@ -77,6 +80,7 @@ public class HJNConfig {
             }
 
             config = GSON.fromJson(builder.toString(), HJNConfig.class);
+            config.validate();
             return config;
         } catch (Exception ignored) {
             return config;
@@ -85,6 +89,8 @@ public class HJNConfig {
 
     public void save() {
         if (configFile == null) return;
+
+        this.validate();
 
         String output = GSON.toJson(this);
 
@@ -98,5 +104,10 @@ public class HJNConfig {
             }
         } catch (Exception ignored) {
         }
+    }
+
+    private void validate() {
+        this.crosshairs.crosshairIndex = MathHelper.clamp(this.crosshairs.crosshairIndex, 0, HJNCrosshair.CROSSHAIRS.size() - 1);
+        this.crosshairs.scale = MathHelper.clamp(this.crosshairs.scale, 0.0f, 2.5f);
     }
 }

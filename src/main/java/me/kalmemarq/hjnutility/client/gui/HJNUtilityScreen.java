@@ -49,12 +49,12 @@ public class HJNUtilityScreen extends Screen {
         HJNStackWidget buttonStack = new HJNStackWidget();
         buttonStack.setColumnGap(2);
 
-        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 64, 32, 16, 16, button -> {
-        }));
-
         buttonStack.add(new HJNIconButton(0, 0, 20, 18, 48, 16, 16, 16, button -> {
             client.setScreen(this.parentScreen);
             this.saveConfig();
+        }));
+
+        buttonStack.add(new HJNIconButton(0, 0, 20, 18, 64, 32, 16, 16, button -> {
         }));
 
         buttonStack.recalculateDimensions();
@@ -75,7 +75,7 @@ public class HJNUtilityScreen extends Screen {
         tabStack.setColumnGap(2);
         tabs.forEach(tabStack::add);
         tabStack.recalculateDimensions();
-        HJNUtil.setAnchoredPos(tabStack, bgX, bgY, bgX + bgW - 5, bgY + bgH, Anchor.TOP_RIGHT, Anchor.TOP_RIGHT);
+        HJNUtil.setAnchoredPos(tabStack, bgX, bgY + 5, bgX + bgW - 5, bgY + bgH, Anchor.TOP_RIGHT, Anchor.TOP_RIGHT);
         this.addDrawableChild(tabStack);
 
         int pageX = bgX + 5;
